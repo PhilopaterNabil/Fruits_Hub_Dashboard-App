@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fruits_hub_dashboard/core/routing/app_router.dart';
+import 'package:fruits_hub_dashboard/core/utils/font_manager.dart';
 
 void main() {
   runApp(const MyApp());
@@ -26,16 +27,16 @@ class MyApp extends StatelessWidget {
         // ],
         // supportedLocales: S.delegate.supportedLocales,
         // locale: const Locale('ar'),
-        // theme: ThemeData(
-        //   colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        //   scaffoldBackgroundColor: Colors.white,
-        //   appBarTheme: AppBarTheme(
-        //     backgroundColor: Colors.white,
-        //     elevation: 0,
-        //   ),
-        //   // fontFamily: FontType.kCairo,
-        //   useMaterial3: true,
-        // ),
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          scaffoldBackgroundColor: Colors.white,
+          appBarTheme: AppBarTheme(
+            backgroundColor: Colors.white,
+            elevation: 0,
+          ),
+          fontFamily: FontType.kCairo,
+          useMaterial3: true,
+        ),
         routerConfig: AppRouter.router,
       ),
     );
