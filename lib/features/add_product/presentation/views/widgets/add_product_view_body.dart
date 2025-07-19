@@ -21,7 +21,7 @@ class _AddProductViewBodyState extends State<AddProductViewBody> {
         child: Form(
           key: _formKey,
           autovalidateMode: autovalidateMode,
-          child: const Column(
+          child: Column(
             children: [
               CustomTextField(
                 hintText: 'Product Name',
@@ -45,7 +45,15 @@ class _AddProductViewBodyState extends State<AddProductViewBody> {
               ),
               SizedBox(height: 16),
               ImageField(
-                
+                onFileChanged: (image) {
+                  // Handle the image file change
+                  if (image != null) {
+                    // Do something with the selected image
+                    print('Selected image: ${image.path}');
+                  } else {
+                    print('No image selected');
+                  }
+                },
               )
             ],
           ),
