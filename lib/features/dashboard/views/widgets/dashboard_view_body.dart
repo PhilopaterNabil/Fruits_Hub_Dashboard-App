@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:fruits_hub_dashboard/core/helper/extensions.dart';
+import 'package:fruits_hub_dashboard/core/routing/routes.dart';
 import 'package:fruits_hub_dashboard/core/widgets/custom_button.dart';
 
 class DashboardViewBody extends StatelessWidget {
@@ -12,7 +14,7 @@ class DashboardViewBody extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           CustomButton(
-            onPressed: () {},
+            onPressed: () => context.goToNamed(Routes.addProductScreen),
             title: 'Add New Item Data',
           ),
         ],

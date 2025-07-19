@@ -1,4 +1,5 @@
 import 'package:fruits_hub_dashboard/core/routing/routes.dart';
+import 'package:fruits_hub_dashboard/features/add_product/presentation/views/add_product_view.dart';
 import 'package:fruits_hub_dashboard/features/dashboard/views/dashboard_view.dart';
 import 'package:go_router/go_router.dart';
 
@@ -9,6 +10,10 @@ abstract class AppRouter {
       GoRoute(
         path: Routes.dashboardScreen,
         builder: (context, state) => const DashboardView(),
+      ),
+      GoRoute(
+        path: Routes.addProductScreen,
+        builder: (context, state) => const AddProductView(),
       ),
     ],
   );
