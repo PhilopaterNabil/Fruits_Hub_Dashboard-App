@@ -14,7 +14,7 @@ class DashboardViewBody extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           CustomButton(
-            onPressed: () => context.goToNamed(Routes.addProductScreen),
+            onPressed: () => context.pushTo(Routes.addProductScreen),
             title: 'Add New Item Data',
           ),
         ],

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fruits_hub_dashboard/core/widgets/custom_text_field.dart';
 
 class AddProductViewBody extends StatefulWidget {
   const AddProductViewBody({super.key});
@@ -13,12 +14,26 @@ class _AddProductViewBodyState extends State<AddProductViewBody> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Form(
-        key: _formKey,
-        autovalidateMode: autovalidateMode,
-        child: const Column(
-          children: [],
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: SingleChildScrollView(
+        child: Form(
+          key: _formKey,
+          autovalidateMode: autovalidateMode,
+          child: const Column(
+            children: [
+              CustomTextField(
+                hintText: 'Product Name',
+                keyboardType: TextInputType.text,
+              ),
+              SizedBox(height: 16),
+              CustomTextField(
+                hintText: 'Product Description',
+                keyboardType: TextInputType.text,
+                maxLines: 5,
+              ),
+            ],
+          ),
         ),
       ),
     );
