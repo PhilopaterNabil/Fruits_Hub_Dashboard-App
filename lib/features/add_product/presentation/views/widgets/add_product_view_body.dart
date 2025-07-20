@@ -45,6 +45,13 @@ class _AddProductViewBodyState extends State<AddProductViewBody> {
                 maxLines: 5,
               ),
               SizedBox(height: 16),
+              IsFeaturedCheckBox(
+                onChanged: (isFeatured) {
+                  // Handle the featured checkbox change
+                  print('Is Featured: $isFeatured');
+                },
+              ),
+              SizedBox(height: 16),
               ImageField(
                 onFileChanged: (image) {
                   // Handle the image file change
@@ -54,13 +61,6 @@ class _AddProductViewBodyState extends State<AddProductViewBody> {
                   } else {
                     print('No image selected');
                   }
-                },
-              ),
-              SizedBox(height: 16),
-              IsFeaturedCheckBox(
-                onChanged: (isFeatured) {
-                  // Handle the featured checkbox change
-                  print('Is Featured: $isFeatured');
                 },
               ),
             ],
