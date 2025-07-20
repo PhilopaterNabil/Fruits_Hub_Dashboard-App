@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fruits_hub_dashboard/core/widgets/custom_text_field.dart';
 import 'package:fruits_hub_dashboard/features/add_product/presentation/views/widgets/image_field.dart';
+import 'package:fruits_hub_dashboard/features/add_product/presentation/views/widgets/is_featured_check_box.dart';
 
 class AddProductViewBody extends StatefulWidget {
   const AddProductViewBody({super.key});
@@ -54,7 +55,14 @@ class _AddProductViewBodyState extends State<AddProductViewBody> {
                     print('No image selected');
                   }
                 },
-              )
+              ),
+              SizedBox(height: 16),
+              IsFeaturedCheckBox(
+                onChanged: (isFeatured) {
+                  // Handle the featured checkbox change
+                  print('Is Featured: $isFeatured');
+                },
+              ),
             ],
           ),
         ),
