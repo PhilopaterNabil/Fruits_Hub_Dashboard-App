@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:fruits_hub_dashboard/core/widgets/custom_button.dart';
 import 'package:fruits_hub_dashboard/core/widgets/custom_text_field.dart';
 import 'package:fruits_hub_dashboard/features/add_product/presentation/views/widgets/image_field.dart';
 import 'package:fruits_hub_dashboard/features/add_product/presentation/views/widgets/is_featured_check_box.dart';
@@ -13,6 +16,10 @@ class AddProductViewBody extends StatefulWidget {
 class _AddProductViewBodyState extends State<AddProductViewBody> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final AutovalidateMode autovalidateMode = AutovalidateMode.disabled;
+  late String name, code, description;
+  late num price;
+  File? image;
+  bool isFeatured = false;
 
   @override
   Widget build(BuildContext context) {
@@ -27,45 +34,101 @@ class _AddProductViewBodyState extends State<AddProductViewBody> {
               CustomTextField(
                 hintText: 'Product Name',
                 keyboardType: TextInputType.text,
+                onSaved: (value) {
+                  if (value != null && value.isNotEmpty) {
+                    name = value;
+                  } else {
+                    name = ''; // Default value if empty
+                  }
+                },
               ),
               SizedBox(height: 16),
               CustomTextField(
                 hintText: 'Product Price',
                 keyboardType: TextInputType.number,
+                onSaved: (value) {
+                  if (value != null && value.isNotEmpty) {
+                    price = num.parse(value);
+                  } else {
+                    price = 0; // Default value if empty
+                  }
+                },
               ),
               SizedBox(height: 16),
               CustomTextField(
                 hintText: 'Product Code',
                 keyboardType: TextInputType.number,
+                onSaved: (value) {
+                  if (value != null && value.isNotEmpty) {
+                    code = value.toLowerCase();
+                  } else {
+                    code = ''; // Default value if empty
+                  }
+                },
               ),
               SizedBox(height: 16),
               CustomTextField(
                 hintText: 'Product Description',
                 keyboardType: TextInputType.text,
                 maxLines: 5,
+                onSaved: (value) {
+                  if (value != null && value.isNotEmpty) {
+                    description = value;
+                  } else {
+                    description = ''; // Default value if empty
+                  }
+                },
               ),
               SizedBox(height: 16),
               IsFeaturedCheckBox(
                 onChanged: (isFeatured) {
-                  // Handle the featured checkbox change
-                  print('Is Featured: $isFeatured');
+                  setState(() {
+                    this.isFeatured = isFeatured;
+                  });
                 },
               ),
               SizedBox(height: 16),
               ImageField(
                 onFileChanged: (image) {
-                  // Handle the image file change
-                  if (image != null) {
-                    // Do something with the selected image
-                    print('Selected image: ${image.path}');
+                  setState(() {
+                    this.image = image;
+                  });
+                },
+              ),
+              SizedBox(height: 24),
+              CustomButton(
+                title: 'Add Product',
+                onPressed: () {
+                  if(image != null){
+                    if (_formKey.currentState!.validate()) {
+                      _formKey.currentState!.save();
+                      // Here you can handle the product addition logic
+                      print('Product Added: $name, $price, $code, $description, Featured: $isFeatured');
+                      // Reset form after submission
+                      _formKey.currentState!.reset();
+                      setState(() {
+                        image = null; // Reset image after submission
+                      });
+                    }
                   } else {
-                    print('No image selected');
+                    showError(context);
+                    
                   }
                 },
               ),
+              SizedBox(height: 24),
             ],
           ),
         ),
+      ),
+    );
+  }
+  
+  void showError(BuildContext context) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Please select an image for the product.'),
+        backgroundColor: Colors.red,
       ),
     );
   }

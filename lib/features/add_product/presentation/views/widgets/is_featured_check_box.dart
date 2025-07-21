@@ -18,6 +18,16 @@ class _IsFeaturedCheckBoxState extends State<IsFeaturedCheckBox> {
   Widget build(BuildContext context) {
     return Row(
       children: [
+        Expanded(
+          child: Text.rich(
+            TextSpan(
+              text: 'Is Featured Item?',
+              style:
+                  AppTextStyles.font13AccentGreenSemiBold.copyWith(color: AppColors.lightGreyColor),
+            ),
+          ),
+        ),
+        Spacer(),
         CustomCheckBox(
           isChecked: isTermsAccepted,
           onChecked: (value) {
@@ -26,22 +36,6 @@ class _IsFeaturedCheckBoxState extends State<IsFeaturedCheckBox> {
               widget.onChanged(value);
             });
           },
-        ),
-        SizedBox(width: 16),
-        Expanded(
-          child: Text.rich(
-            TextSpan(
-              text: 'من خلال إنشاء حساب ، فإنك توافق على',
-              style:
-                  AppTextStyles.font13AccentGreenSemiBold.copyWith(color: AppColors.lightGreyColor),
-              children: [
-                TextSpan(
-                  text: ' الشروط والأحكام الخاصة بنا',
-                  style: AppTextStyles.font13AccentGreenSemiBold,
-                ),
-              ],
-            ),
-          ),
         ),
       ],
     );
