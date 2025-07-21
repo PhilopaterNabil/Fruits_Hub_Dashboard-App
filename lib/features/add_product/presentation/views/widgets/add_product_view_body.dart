@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:fruits_hub_dashboard/core/widgets/custom_button.dart';
 import 'package:fruits_hub_dashboard/core/widgets/custom_text_field.dart';
+import 'package:fruits_hub_dashboard/features/add_product/domain/entities/add_product_input_entity.dart';
 import 'package:fruits_hub_dashboard/features/add_product/presentation/views/widgets/image_field.dart';
 import 'package:fruits_hub_dashboard/features/add_product/presentation/views/widgets/is_featured_check_box.dart';
 
@@ -15,7 +16,7 @@ class AddProductViewBody extends StatefulWidget {
 
 class _AddProductViewBodyState extends State<AddProductViewBody> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final AutovalidateMode autovalidateMode = AutovalidateMode.disabled;
+  AutovalidateMode autovalidateMode = AutovalidateMode.disabled;
   late String name, code, description;
   late num price;
   File? image;
@@ -99,20 +100,23 @@ class _AddProductViewBodyState extends State<AddProductViewBody> {
               CustomButton(
                 title: 'Add Product',
                 onPressed: () {
-                  if(image != null){
+                  if (image != null) {
                     if (_formKey.currentState!.validate()) {
                       _formKey.currentState!.save();
-                      // Here you can handle the product addition logic
-                      print('Product Added: $name, $price, $code, $description, Featured: $isFeatured');
-                      // Reset form after submission
-                      _formKey.currentState!.reset();
-                      setState(() {
-                        image = null; // Reset image after submission
-                      });
+                      AddProductInputEntity addProductEntity = AddProductInputEntity(
+                        name: name,
+                        code: code,
+                        description: description,
+                        price: price,
+                        image: image!,
+                        isFeatured: isFeatured,
+                      );
+                    } else {
+                      autovalidateMode = AutovalidateMode.always;
+                      setState(() {});
                     }
                   } else {
                     showError(context);
-                    
                   }
                 },
               ),
@@ -123,7 +127,7 @@ class _AddProductViewBodyState extends State<AddProductViewBody> {
       ),
     );
   }
-  
+
   void showError(BuildContext context) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
