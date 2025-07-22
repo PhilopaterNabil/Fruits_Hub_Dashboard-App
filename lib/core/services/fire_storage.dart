@@ -1,14 +1,23 @@
+import 'dart:io';
+
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:fruits_hub_dashboard/core/services/storage_service.dart';
+import 'package:path/path.dart' as b;
 
 class FireStorage implements StorageService {
-  final storageReference = FirebaseStorage.instance;
+  final storageReference = FirebaseStorage.instance.ref();
 
-  // TODO: Implement the uploadFile method to upload files to Firebase Storage
   @override
-  Future<String> uploadFile(String file) async {
-    // Simulate file upload logic
-    await Future.delayed(Duration(seconds: 2));
-    return 'https://example.com/$file';
+  Future<String> uploadFile(File file, String path) async {
+    String fileName = b.basename(file.path);
+    String extension = b.extension(file.path);
+    var fileReference = storageReference.child('$path/$fileName.$extension');
+    try {
+      await fileReference.putFile(file);
+      String downloadUrl = await fileReference.getDownloadURL();
+      return downloadUrl;
+    } catch (e) {
+      throw Exception('Failed to upload file: $e');
+    }
   }
 }
