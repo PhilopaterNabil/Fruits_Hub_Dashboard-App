@@ -8,6 +8,7 @@ import 'package:fruits_hub_dashboard/features/add_product/domain/entities/add_pr
 import 'package:fruits_hub_dashboard/features/add_product/presentation/managers/add_product/add_product_cubit.dart';
 import 'package:fruits_hub_dashboard/features/add_product/presentation/views/widgets/image_field.dart';
 import 'package:fruits_hub_dashboard/features/add_product/presentation/views/widgets/is_featured_check_box.dart';
+import 'package:fruits_hub_dashboard/features/add_product/presentation/views/widgets/is_organic_check_box.dart';
 
 class AddProductViewBody extends StatefulWidget {
   const AddProductViewBody({super.key});
@@ -20,9 +21,10 @@ class _AddProductViewBodyState extends State<AddProductViewBody> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   AutovalidateMode autovalidateMode = AutovalidateMode.disabled;
   late String name, code, description;
-  late num price;
+  late num price, expirationsMonths, numberOfCalories, unitAmount;
   File? image;
   bool isFeatured = false;
+  bool isOrganic = false;
 
   @override
   Widget build(BuildContext context) {
@@ -54,6 +56,42 @@ class _AddProductViewBodyState extends State<AddProductViewBody> {
                     price = num.parse(value);
                   } else {
                     price = 0; // Default value if empty
+                  }
+                },
+              ),
+              SizedBox(height: 16),
+              CustomTextField(
+                hintText: 'Expiration Months',
+                keyboardType: TextInputType.number,
+                onSaved: (value) {
+                  if (value != null && value.isNotEmpty) {
+                    expirationsMonths = num.parse(value);
+                  } else {
+                    expirationsMonths = 0; // Default value if empty
+                  }
+                },
+              ),
+              SizedBox(height: 16),
+              CustomTextField(
+                hintText: 'Number of Calories',
+                keyboardType: TextInputType.number,
+                onSaved: (value) {
+                  if (value != null && value.isNotEmpty) {
+                    numberOfCalories = num.parse(value);
+                  } else {
+                    numberOfCalories = 0; // Default value if empty
+                  }
+                },
+              ),
+              SizedBox(height: 16),
+              CustomTextField(
+                hintText: 'Unit Amount',
+                keyboardType: TextInputType.number,
+                onSaved: (value) {
+                  if (value != null && value.isNotEmpty) {
+                    unitAmount = int.parse(value);
+                  } else {
+                    unitAmount = 0; // Default value if empty
                   }
                 },
               ),
@@ -91,6 +129,14 @@ class _AddProductViewBodyState extends State<AddProductViewBody> {
                 },
               ),
               SizedBox(height: 16),
+              IsOrganicCheckBox(
+                onChanged: (isOrganic) {
+                  setState(() {
+                    this.isOrganic = isOrganic;
+                  });
+                },
+              ),
+              SizedBox(height: 16),
               ImageField(
                 onFileChanged: (image) {
                   setState(() {
@@ -112,6 +158,10 @@ class _AddProductViewBodyState extends State<AddProductViewBody> {
                         price: price,
                         image: image!,
                         isFeatured: isFeatured,
+                        expirationsMonths: expirationsMonths.toInt(),
+                        numberOfCalories: numberOfCalories.toInt(),
+                        unitAmount: unitAmount.toInt(),
+                        isOrganic: isOrganic,
                       );
 
                       context.read<AddProductCubit>().addProduct(addProductEntity);
