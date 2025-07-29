@@ -25,6 +25,16 @@ class ReviewModel {
     );
   }
 
+  factory ReviewModel.fromJson(Map<String, dynamic> json) {
+    return ReviewModel(
+      name: json['name'],
+      imageUrl: json['imageUrl'],
+      ratting: json['ratting'],
+      date: json['date'],
+      reviewDescription: json['reviewDescription'],
+    );
+  }
+
   toJson() {
     return {
       'name': name,

@@ -9,7 +9,17 @@ class SupabaseStorageService implements StorageService {
   static late Supabase _supabase;
 
   static createBuckets(String bucketName) async {
-    await _supabase.client.storage.createBucket(bucketName);
+    bool isBucketExists = false;
+    await _supabase.client.storage.listBuckets().then((buckets) {
+      if (buckets.any((bucket) => bucket.name == bucketName)) {
+        isBucketExists = true;
+        return; // Bucket already exists
+      }
+    });
+
+    if (!isBucketExists) {
+      await _supabase.client.storage.createBucket(bucketName);
+    }
   }
 
   static initSupabase() async {
@@ -22,10 +32,13 @@ class SupabaseStorageService implements StorageService {
   @override
   Future<String> uploadFile(File file, String path) async {
     String fileName = b.basename(file.path);
-    String extension = b.extension(file.path);
+    String extensionName = b.extension(file.path);
     var result = await _supabase.client.storage
         .from('fruits_images')
-        .upload('$path/$fileName.$extension', file);
+        .upload('$path/$fileName.$extensionName', file);
+
+        final String downloadUrl = await _supabase.client.storage
+        .from('fruits_images').getPublicUrl('$path/$fileName.$extensionName');
 
     return result;
   }
