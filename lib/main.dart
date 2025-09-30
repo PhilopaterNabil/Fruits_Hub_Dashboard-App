@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fruits_hub_dashboard/core/di/dependency_injection.dart';
 import 'package:fruits_hub_dashboard/core/services/custom_bloc_observer.dart';
 import 'package:fruits_hub_dashboard/core/services/supabase_storage_service.dart';
+import 'package:fruits_hub_dashboard/core/utils/constants.dart';
 import 'package:fruits_hub_dashboard/firebase_options.dart';
 import 'package:fruits_hub_dashboard/fruits_hub_dashboard_app.dart';
 
@@ -15,7 +16,7 @@ void main() async {
   );
 
   await SupabaseStorageService.initSupabase();
-  await SupabaseStorageService.createBuckets('fruits_images');
+  await SupabaseStorageService.createBuckets(kFruitsImagesBucket);
 
   Bloc.observer = CustomBlocObserver();
 

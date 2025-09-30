@@ -11,7 +11,9 @@ class FireStorage implements StorageService {
   Future<String> uploadFile(File file, String path) async {
     String fileName = b.basename(file.path);
     String extension = b.extension(file.path);
+
     var fileReference = storageReference.child('$path/$fileName.$extension');
+
     try {
       await fileReference.putFile(file);
       String downloadUrl = await fileReference.getDownloadURL();
