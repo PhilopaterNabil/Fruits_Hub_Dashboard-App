@@ -2,7 +2,8 @@ import 'dart:io';
 
 import 'package:fruits_hub_dashboard/core/services/storage_service.dart';
 import 'package:fruits_hub_dashboard/core/utils/constants.dart';
-import 'package:path/path.dart' as b;
+// path package is not needed here after refactor; file_name_utils handles path parsing
+import 'package:fruits_hub_dashboard/core/utils/file_name_utils.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class SupabaseStorageService implements StorageService {
@@ -31,17 +32,16 @@ class SupabaseStorageService implements StorageService {
 
   @override
   Future<String> uploadFile(File file, String path) async {
-    String fileName = b.basename(file.path);
-    String extensionName = b.extension(file.path);
+    // Build a sanitized, unique object name and upload.
+    final String objectName = buildUniqueObjectName(path, file.path);
 
-    var result = await _supabase.client.storage
-        .from(kFruitsImagesBucket)
-        .upload('$path/$fileName.$extensionName', file);
+    // Upload file to the bucket (unique name prevents 409 conflict).
+    await _supabase.client.storage.from(kFruitsImagesBucket).upload(objectName, file);
 
-    final String downloadUrl = _supabase.client.storage
-        .from(kFruitsImagesBucket)
-        .getPublicUrl('$path/$fileName.$extensionName');
+    // Return the percent-encoded public URL for the uploaded object.
+    final String downloadUrl =
+        _supabase.client.storage.from(kFruitsImagesBucket).getPublicUrl(objectName);
 
-    return result;
+    return Uri.encodeFull(downloadUrl);
   }
 }

@@ -2,17 +2,17 @@ import 'dart:io';
 
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:fruits_hub_dashboard/core/services/storage_service.dart';
-import 'package:path/path.dart' as b;
+// path package is not needed here after refactor; file_name_utils handles path parsing
+import 'package:fruits_hub_dashboard/core/utils/file_name_utils.dart';
 
 class FireStorage implements StorageService {
   final storageReference = FirebaseStorage.instance.ref();
 
   @override
   Future<String> uploadFile(File file, String path) async {
-    String fileName = b.basename(file.path);
-    String extension = b.extension(file.path);
-
-    var fileReference = storageReference.child('$path/$fileName.$extension');
+    // Build a sanitized, unique object name and get a reference.
+    final String objectName = buildUniqueObjectName(path, file.path);
+    final fileReference = storageReference.child(objectName);
 
     try {
       await fileReference.putFile(file);
