@@ -4,6 +4,9 @@ import 'package:fruits_hub_dashboard/core/routing/routes.dart';
 import 'package:fruits_hub_dashboard/features/add_product/presentation/managers/add_product/add_product_cubit.dart';
 import 'package:fruits_hub_dashboard/features/add_product/presentation/views/add_product_view.dart';
 import 'package:fruits_hub_dashboard/features/dashboard/views/dashboard_view.dart';
+import 'package:fruits_hub_dashboard/features/orders/presentation/managers/cubit/update_order_cubit.dart';
+import 'package:fruits_hub_dashboard/features/orders/presentation/managers/fetch_orders_cubit/fetch_orders_cubit.dart';
+import 'package:fruits_hub_dashboard/features/orders/presentation/views/orders_view.dart';
 import 'package:go_router/go_router.dart';
 
 abstract class AppRouter {
@@ -19,6 +22,20 @@ abstract class AppRouter {
         builder: (context, state) => BlocProvider(
           create: (context) => getIt<AddProductCubit>(),
           child: const AddProductView(),
+        ),
+      ),
+      GoRoute(
+        path: Routes.ordersScreen,
+        builder: (context, state) => MultiBlocProvider(
+          providers: [
+            BlocProvider(
+              create: (context) => getIt<FetchOrdersCubit>()..fetchOrders(),
+            ),
+            BlocProvider(
+              create: (context) => getIt<UpdateOrderCubit>(),
+            ),
+          ],
+          child: const OrdersView(),
         ),
       ),
     ],
